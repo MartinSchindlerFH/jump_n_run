@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public float MovementSpeed = 10f, RotationSpeed = 10f, JumpForce = 10f, Gravity = -30f;
     private float _rotationY;
     private float _verticalVelocity;
+    private Vector3 move;
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
@@ -13,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector2 movementVector)
     {
-        Vector3 move = transform.forward * movementVector.y + transform.right * movementVector.x;
+        move = transform.forward * movementVector.y + transform.right * movementVector.x;
         move = move * MovementSpeed * Time.deltaTime;
         _characterController.Move(move);
 
@@ -30,5 +32,19 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         if (_characterController.isGrounded) _verticalVelocity = JumpForce;
+    }
+
+    public void FixedUpdate()
+    {
+        if (_characterController.isGrounded) _characterController.transform.position = _characterController.transform.position + GetPlatformVelocity(move) * Time.deltaTime;
+    }
+
+    private Vector3 GetPlatformVelocity(Vector3 move)
+    {
+        if(Physics.Raycast(_characterController.transform.position, move, out RaycastHit hitinfo,1,10))
+        {
+            return hitinfo.collider.gameObject.GetComponent<MovingPlatform>().GetVelocity();
+        }
+        return new Vector3(0, 0, 0);
     }
 }

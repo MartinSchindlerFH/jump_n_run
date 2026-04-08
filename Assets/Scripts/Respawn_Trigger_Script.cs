@@ -13,14 +13,14 @@ public class Respawn_Trigger_Script : MonoBehaviour
         if (collider.gameObject == Player)
         {
             RespawnEvent.Invoke();
-            Respawn();
+            Respawn(collider.gameObject);
         }
     }
 
-    private void Respawn()
+    private void Respawn(GameObject Player )
     {
-        Console.WriteLine("Respawn Triggered");
-        CharacterController _characterController = gameObject.GetComponent<CharacterController>();
+        Debug.Log("Respawn Triggered");
+        CharacterController _characterController = (CharacterController)Player.GetComponent("CharacterController"); 
         _characterController.enabled = false;
         Player.transform.position = respawnPoint.transform.position;
         _characterController.enabled = true;

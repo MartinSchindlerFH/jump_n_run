@@ -1,42 +1,25 @@
-using System.Collections;
 using UnityEngine;
-
 public class MovingPlatform : MonoBehaviour
 {
-    [SerializeField] GameObject pointA, pointB;
-    [SerializeField] float speed = 10f;
-    [SerializeField] float delay = 1f;
-    [SerializeField] GameObject platform;
-    [SerializeField] bool active = true;
-
-    private Vector3 targetPosition;
+    [SerializeField]
+    private float platformSpeed;
+    [SerializeField]
+    private GameObject start;
+    [SerializeField]
+    private GameObject end;
 
     private Vector3 lastPosition;
-
-    private void Start()
+    void FixedUpdate()
     {
-        platform.transform.position = pointA.transform.position;
-        targetPosition = pointB.transform.position;
-        StartCoroutine(MovePlatform());
-    }
-
-    IEnumerator MovePlatform()
-    {
-        while (active)
-        {
-            while ((targetPosition - platform.transform.position).sqrMagnitude > 0.01f)
-            {
-                lastPosition = platform.transform.position;
-                platform.transform.position = Vector3.MoveTowards(platform.transform.position, targetPosition, speed * Time.deltaTime);
-                yield return null; // Pauses untill next frame
-            }
-            targetPosition = targetPosition == pointA.transform.position ? pointB.transform.position : pointA.transform.position;
-            yield return new WaitForSeconds(delay);
-        }
+        float pingPong = Mathf.PingPong(Time.fixedTime * this.platformSpeed,
+       1.0f);
+        var newPosition = Vector3.Lerp(this.start.transform.position, this.end.transform.position, pingPong);
+        this.transform.localPosition = newPosition;
     }
 
     public Vector3 GetVelocity()
     {
-        return platform.transform.position - lastPosition * Time.deltaTime;
+        Debug.Log(this.transform.position - lastPosition * Time.deltaTime);
+        return this.transform.position - lastPosition * Time.deltaTime;
     }
 }
