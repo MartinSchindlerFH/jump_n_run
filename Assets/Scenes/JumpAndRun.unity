@@ -1386,8 +1386,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
   platformSpeed: 0.5
-  start: {x: 1, y: 0.6999999, z: 0}
-  end: {x: 3, y: 0.6999999, z: 0}
+  start: {fileID: 1955272866}
+  end: {fileID: 35153426}
 --- !u!1001 &575293730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1877,8 +1877,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
   platformSpeed: 0.5
-  start: {x: 1, y: 0.6999999, z: 0}
-  end: {x: 3, y: 0.6999999, z: 0}
+  start: {fileID: 2029431605}
+  end: {fileID: 4119400}
 --- !u!4 &807867049 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3256125031656301076, guid: a15ace78686865844bfd6b27a8dd582c, type: 3}
@@ -1964,8 +1964,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
   platformSpeed: 0.5
-  start: {x: 1, y: 0.6999999, z: 0}
-  end: {x: 3, y: 0.6999999, z: 0}
+  start: {fileID: 1611756371}
+  end: {fileID: 624806633}
 --- !u!1001 &851860859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3509,8 +3509,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
   platformSpeed: 0.5
-  start: {x: 1, y: 0.6999999, z: 0}
-  end: {x: 3, y: 0.6999999, z: 0}
+  start: {fileID: 961031948}
+  end: {fileID: 735192898}
 --- !u!1001 &1267502133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4475,8 +4475,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
   platformSpeed: 0.5
-  start: {x: 1, y: 0.6999999, z: 0}
-  end: {x: 3, y: 0.6999999, z: 0}
+  start: {fileID: 278320202}
+  end: {fileID: 1046846881}
 --- !u!1001 &1753160953
 PrefabInstance:
   m_ObjectHideFlags: 0
