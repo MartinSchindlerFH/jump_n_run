@@ -17,6 +17,8 @@ public class SmoothLever : MonoBehaviour
     [SerializeField]
     private GameObject leverHandle;
 
+    private bool playerInRange;
+
     void Start()
     {
         this.interactAction = InputSystem.actions.FindAction("Interact");
@@ -61,11 +63,26 @@ public class SmoothLever : MonoBehaviour
         this.StartCoroutine(this.InterpolateLeverCoroutine());
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (this.interactAction.WasPressedThisFrame() && !this.interpolating)
+        if (this.interactAction.WasPressedThisFrame() && !this.interpolating && playerInRange)
         {
             this.ToggleLever();
         }
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if(collider.gameObject.layer == 11) playerInRange = true;
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.layer == 11) playerInRange = false;
+    }
+
+    public bool getLeverStatus()
+    {
+        return on;
     }
 }

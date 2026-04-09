@@ -84,17 +84,25 @@ public class Character : MonoBehaviour
             this.transform.forward = characterForward.normalized;
         }
 
-        if (controller.isGrounded) this.characterMovement = this.characterMovement + (GetPlatformVelocity(controller.transform.position,characterMovement) * Time.deltaTime);
+        var platformVelocity = new Vector3(0, 0, 0);
+        if (controller.isGrounded) platformVelocity = GetPlatformVelocity(controller.transform.position, characterForward) ;
+        var combinedMovement = this.characterMovement + platformVelocity * Time.fixedDeltaTime;
+        this.controller.Move(combinedMovement);
         this.controller.Move(this.characterMovement);
     }
 
     private Vector3 GetPlatformVelocity(Vector3 position, Vector3 movement)
     {
-        Debug.Log("GetPlatformVelocety was triggered.");
-        if (Physics.Raycast(position, movement, out RaycastHit hitinfo, 1, 10))
+        
+        if (Physics.Raycast(position, movement, out RaycastHit hitinfo, 10, 10))
         {
+            Debug.DrawRay(position, movement * hitinfo.distance, Color.yellow);
+            Debug.Log("Did Hit");
+            Debug.Log(hitinfo.collider.gameObject.GetComponent<MovingPlatform>().GetVelocity());
             return hitinfo.collider.gameObject.GetComponent<MovingPlatform>().GetVelocity();
         }
+        Debug.DrawRay(position, movement * 1000, Color.white);
+        Debug.Log("No Hit");
         return new Vector3(0, 0, 0);
     }
 }
