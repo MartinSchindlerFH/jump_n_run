@@ -24,12 +24,27 @@ public class Character : MonoBehaviour
     private Vector3 characterMovement;
     private Vector3 jumpVelocity;
     private Vector3 characterGravity;
+
+    [SerializeField] private AudioClip WalkingSound;
+    [SerializeField] private AudioClip JumpingSound;
+    private AudioSource audioSorce;
+
+    private Animator animator;
     void Start()
     {
         this.controller = this.GetComponent<CharacterController>();
         this.moveAction = InputSystem.actions.FindAction("Move");
         this.jumpAction = InputSystem.actions.FindAction("Jump");
         this.jumpCooldownTimer = 0.0f;
+
+        animator = GetComponent<Animator>();
+    }
+
+    private void Awake()    // Scene Laden
+    {
+        audioSorce = GetComponent<AudioSource>();
+        audioSorce.loop = true;
+        audioSorce.playOnAwake = false;
     }
     void HandleJumping()
     {
@@ -89,20 +104,55 @@ public class Character : MonoBehaviour
         var combinedMovement = this.characterMovement + platformVelocity * Time.fixedDeltaTime;
         this.controller.Move(combinedMovement);
         this.controller.Move(this.characterMovement);
+
+        this.SetAnimationState(inputMovement);
     }
 
     private Vector3 GetPlatformVelocity(Vector3 position, Vector3 movement)
     {
         
-        if (Physics.Raycast(position, movement, out RaycastHit hitinfo, 10, 10))
+        if (Physics.Raycast(position, Vector3.down * 2f, out RaycastHit hitinfo, 10, 10))
         {
-            Debug.DrawRay(position, movement * hitinfo.distance, Color.yellow);
+            Debug.DrawRay(position, Vector3.down * hitinfo.distance, Color.yellow);
             Debug.Log("Did Hit");
             Debug.Log(hitinfo.collider.gameObject.GetComponent<MovingPlatform>().GetVelocity());
             return hitinfo.collider.gameObject.GetComponent<MovingPlatform>().GetVelocity();
         }
-        Debug.DrawRay(position, movement * 1000, Color.white);
+        Debug.DrawRay(position, Vector3.down, Color.white);
         Debug.Log("No Hit");
         return new Vector3(0, 0, 0);
+    }
+
+    void SetAnimationState(Vector2 inputMovement)
+    {
+        if (this.isJumping)
+        {
+            audioSorce.clip = JumpingSound;
+            audioSorce.Play();
+        }
+        else { 
+            if(audioSorce.clip == JumpingSound)
+            {
+                audioSorce.Stop();
+            }
+        }
+
+        if(inputMovement != Vector2.zero)
+        {
+            audioSorce.clip = WalkingSound;
+            audioSorce.Play();
+        }
+        else
+        {
+            if(inputMovement == Vector2.zero)
+            {
+                audioSorce.Stop();
+            }
+        }
+        
+        this.animator.SetBool("IsJumping", this.isJumping);
+        this.animator.SetBool("IsRunning", inputMovement != Vector2.zero);
+        this.animator.SetFloat("MovementForward", inputMovement.magnitude);
+
     }
 }
