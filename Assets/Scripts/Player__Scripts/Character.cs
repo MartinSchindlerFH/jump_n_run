@@ -137,7 +137,7 @@ public class Character : MonoBehaviour
             }
         }
 
-        if(inputMovement != Vector2.zero)
+        if(inputMovement != Vector2.zero && audioSorce.clip != WalkingSound)
         {
             audioSorce.clip = WalkingSound;
             audioSorce.Play();
